@@ -16,7 +16,7 @@ public class App {
             dse.connect(CONTACT_POINTS, PORT);
 //            dse.createSchema();
             csv.populateFlights(dse);
-            dse.querySchema();
+//            dse.querySchema();
         } catch(Exception e) {
             e.printStackTrace();
         } finally {

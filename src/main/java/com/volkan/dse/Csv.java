@@ -23,11 +23,13 @@ public class Csv {
                     "ID,YEAR,DAY_OF_MONTH,FL_DATE,AIRLINE_ID,CARRIER,FL_NUM," +
                     "ORIGIN_AIRPORT_ID,ORIGIN,ORIGIN_CITY_NAME,ORIGIN_STATE_ABR,DEST," +
                     "DEST_CITY_NAME,DEST_STATE_ABR,DEP_TIME,ARR_TIME,ACTUAL_ELAPSED_TIME,AIR_TIME,DISTANCE");
-            props.put("columnTypes", "Int,Int,Int,Timestamp,Int,String,Int,Int,String,String,String,String," +
-                    "String,String,Timestamp,Timestamp,Timestamp,Timestamp,Int");
+            props.put("columnTypes", "Int,Int,Int,Date,Int,String,Int,Int,String,String,String,String," +
+                    "String,String,Time,Time,Time,Time,Int");
+            props.put("dateFormat", "yyyy/MM/dd");
+            props.put("timeFormat", "HHmm");
             Connection conn = DriverManager.getConnection("jdbc:relique:csv:" + DIRECTORY_WITH_CSVS, props);
             Statement stmt = conn.createStatement();
-            ResultSet results = stmt.executeQuery("SELECT ID" +
+            ResultSet results = stmt.executeQuery("SELECT *" +
                     " FROM flights_from_pg where ID < 5");
             while (results.next()) {
                 // Fetch column values with methods that match the column data types.

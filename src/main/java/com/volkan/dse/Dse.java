@@ -27,7 +27,7 @@ public class Dse {
     }
 
     /**
-     * Creates the schema (keyspace) and table
+     * Creates the schema (keyspace) and initial flight table
      */
     public void createSchema() {
         session.execute("CREATE KEYSPACE IF NOT EXISTS ap WITH replication " +
@@ -59,14 +59,28 @@ public class Dse {
     }
 
     /**
+     * Creates the daily flights table ordered by dep time.
+     */
+    public void createDailyFlightsByOriTable() {
+        session.execute(
+                "CREATE TABLE IF NOT EXISTS ap.daily_flights_by_ori (" +
+                    "origin_airport_id int," +
+                    "fl_date timestamp," +
+                    "dep_time timestamp," +
+                    "PRIMARY KEY ((origin_airport_id, fl_date), dep_time)" +
+                    ") WITH CLUSTERING ORDER BY (dep_time desc);"
+        );
+    }
+
+    /**
      * Inserts data into the table.
      */
     public void loadData(int p1, int p2, int p3, java.sql.Timestamp p4, int p5, String p6, int p7,
                          int p8, String p9, String p10, String p11, String p12, String p13, String p14, java.sql.Timestamp p15,
                          java.sql.Timestamp p16, java.sql.Timestamp p17, java.sql.Timestamp p18, int p19) {
-        String cqlInsert = String.format("INSERT INTO simplex.songs (ID,YEAR,DAY_OF_MONTH,FL_DATE,AIRLINE_ID,CARRIER,FL_NUM," +
-                        "ORIGIN_AIRPORT_ID,ORIGIN,ORIGIN_CITY_NAME,ORIGIN_STATE_ABR,DEST," +
-                        "DEST_CITY_NAME,DEST_STATE_ABR,DEP_TIME,ARR_TIME,ACTUAL_ELAPSED_TIME,AIR_TIME,DISTANCE) " +
+        String cqlInsert = String.format("INSERT INTO simplex.songs (id,year,day_of_month,fl_date,airline_id,carrier,fl_num," +
+                        "origin_airport_id,origin,origin_city_name,origin_state_abr,dest," +
+                        "dest_city_name,dest_state_abr,dep_time,arr_time,actual_elapsed_time,air_time,distance) " +
                         "VALUES (" +
                         "%d, %d, %d, %s, %d, %s, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d" +
                         ");",
@@ -84,15 +98,15 @@ public class Dse {
                 "SELECT * FROM ap.flights " +
                         "WHERE id = 1;");
 
-        System.out.printf("%-30s\t%-20s\t%-20s%n", "id", "year", "day_of_month");
+        System.out.printf("%-30s\t%-20s\t%-20s%n", "origin", "dest", "air_time");
         System.out.println("-------------------------------+-----------------------+--------------------");
 
         for (Row row : results) {
 
             System.out.printf("%-30s\t%-20s\t%-20s%n",
-                    row.getString("id"),
-                    row.getString("year"),
-                    row.getString("day_of_month"));
+                    row.getString("origin"),
+                    row.getString("dest"),
+                    row.getString("air_time"));
             // ...
 
         }
