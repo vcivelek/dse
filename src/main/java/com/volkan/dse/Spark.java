@@ -15,8 +15,6 @@ package com.volkan.dse;
 //        SparkConf conf = new SparkConf().setAppName(appname);
 //        // create a Spark context
 //        JavaSparkContext sc = new JavaSparkContext(conf);
-//        DataFrame employees = hiveContext.sql("SELECT * FROM company.employees");
-//        employees.registerTempTable("employees");
 //    }
 //
 //}
