@@ -15,7 +15,6 @@
             <artifactId>csvjdbc</artifactId>
             <version>1.0.31</version>
         </dependency>
-
         <dependency>
             <groupId>com.datastax.cassandra</groupId>
             <artifactId>dse-driver</artifactId>
@@ -30,6 +29,17 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.datastax.spark</groupId>
+            <artifactId>spark-cassandra-connector_2.11</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.11</artifactId>
+            <version>1.6.2</version>
         </dependency>
     </dependencies>
 

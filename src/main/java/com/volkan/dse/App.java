@@ -15,22 +15,19 @@ public class App {
         Csv csv = new Csv();
 
         try {
-            java.util.Date date = new java.util.Date();
-            java.sql.Time t = new java.sql.Time(date.getTime());
-            ArrayList<Integer> foo = new ArrayList<Integer>();
-            foo = dse.findSlots(t, t);
-            for (Integer x : foo) {
-                System.out.println(x);
-            }
-//            dse.loadDailyFlightsByAirtime();
-//            dse.connect(CONTACT_POINTS, PORT);
+            dse.connect(CONTACT_POINTS, PORT);
+//            // Create the keyspace and tables.
 //            dse.createSchema();
+//            dse.createDailyFlightsByOri();
+//            dse.createDailyFlightsByAirtime();
+//            // Populate them with the flights_from_pg.csv
 //            csv.populateFlights(dse);
-//            dse.querySchema();
+//            // Fetch some data.
+            dse.querySchema();
         } catch(Exception e) {
             e.printStackTrace();
         } finally {
-//            dse.close();
+            dse.close();
         }
     }
 }

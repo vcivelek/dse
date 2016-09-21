@@ -31,9 +31,10 @@ public class Dse {
      * Creates the schema (keyspace) and initial flight table
      */
     public void createSchema() {
+//        session.execute("CREATE KEYSPACE IF NOT EXISTS ap WITH replication " +
+//                "= {'class':'NetworkTopologyStrategy', 'europe-west1-b': '2'} AND durable_writes = true;");
         session.execute("CREATE KEYSPACE IF NOT EXISTS ap WITH replication " +
-                "= {'class':'NetworkTopologyStrategy', 'europe-west1-b': '2'} AND durable_writes = true;");
-
+                "= {'class':'SimpleStrategy', 'replication_factor': 1 };");
         session.execute(
                 "CREATE TABLE IF NOT EXISTS ap.flights (" +
                         "id int PRIMARY KEY," +
@@ -161,22 +162,21 @@ public class Dse {
     public void querySchema() {
 
         ResultSet results = session.execute(
-                "SELECT * FROM ap.flights " +
-                        "WHERE id = 3;");
+                "SELECT * FROM ap.daily_flights_by_ori " +
+                        "WHERE origin = 'HNL' AND fl_date = '2012-01-25';");
 
-        System.out.printf("%-30s\t%-20s\t%-20s%n", "origin", "dest", "air_time");
+        System.out.printf("%-30s\t%-20s\t%-20s%n", "origin", "fl_date", "dep_time");
         System.out.println("-------------------------------+-----------------------+--------------------");
-
+        int i = 0;
         for (Row row : results) {
-
+            i++;
             System.out.printf("%-30s\t%-20s\t%-20s%n",
                     row.getString("origin"),
-                    row.getString("dest"),
-                    row.getTimestamp("air_time"));
-            // ...
+                    row.getTimestamp("fl_date"),
+                    row.getTimestamp("dep_time"));
 
         }
-
+        System.out.println("Total Count: " + i);
     }
 
     /**
