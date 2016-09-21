@@ -29,16 +29,17 @@ public class Csv {
             props.put("timeFormat", "HHmm");
             Connection conn = DriverManager.getConnection("jdbc:relique:csv:" + DIRECTORY_WITH_CSVS, props);
             Statement stmt = conn.createStatement();
-            ResultSet results = stmt.executeQuery("SELECT *" +
+            ResultSet results = stmt.executeQuery("SELECT ID,YEAR,DAY_OF_MONTH,FL_DATE,AIRLINE_ID,CARRIER,FL_NUM," +
+                    "ORIGIN_AIRPORT_ID,ORIGIN,ORIGIN_CITY_NAME,ORIGIN_STATE_ABR,DEST," +
+                    "DEST_CITY_NAME,DEST_STATE_ABR,DEP_TIME,ARR_TIME,ACTUAL_ELAPSED_TIME,AIR_TIME,DISTANCE" +
                     " FROM flights_from_pg where ID < 5");
             while (results.next()) {
                 // Fetch column values with methods that match the column data types.
-                System.out.println(results.getInt(1));
-                dse.loadData(results.getInt(1), results.getInt(2), results.getInt(3), results.getTimestamp(4),
+                dse.loadData(results.getInt(1), results.getInt(2), results.getInt(3), results.getDate(4),
                         results.getInt(5), results.getString(6), results.getInt(7), results.getInt(8),
                         results.getString(9), results.getString(10), results.getString(11),
                         results.getString(12), results.getString(13), results.getString(14),
-                        results.getTimestamp(15), results.getTimestamp(16), results.getTimestamp(17), results.getTimestamp(18),
+                        results.getTime(15), results.getTime(16), results.getTime(17), results.getTime(18),
                         results.getInt(19));
             }
             conn.close();
