@@ -58,6 +58,7 @@ public class Dse {
                         "year int" +
                         ");");
 
+        session.execute("CREATE INDEX IF NOT EXISTS ON ap.flights (origin);");
     }
 
     /**
@@ -159,11 +160,11 @@ public class Dse {
     /**
      * Queries and displays data.
      */
-    public void querySchema() {
+    public void querySchema(String origin, String date) {
 
         ResultSet results = session.execute(
                 "SELECT * FROM ap.daily_flights_by_ori " +
-                        "WHERE origin = 'HNL' AND fl_date = '2012-01-25';");
+                        "WHERE origin = '"+origin+"' AND fl_date = '"+date+"';");
 
         System.out.printf("%-30s\t%-20s\t%-20s%n", "origin", "fl_date", "dep_time");
         System.out.println("-------------------------------+-----------------------+--------------------");
@@ -176,7 +177,7 @@ public class Dse {
                     row.getTimestamp("dep_time"));
 
         }
-        System.out.println("Total Count: " + i);
+        System.out.println("Total Count for "+origin+" on "+date+" : " + i);
     }
 
     /**

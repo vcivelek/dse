@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -52,4 +53,36 @@ public class Csv {
             e.printStackTrace();
         }
     }
+
+    ArrayList<String> getOrigins(){
+        try {
+            Class.forName("org.relique.jdbc.csv.CsvDriver");
+            Properties props = new Properties();
+            // Column names and column data types.
+            props.put("suppressHeaders", "true");
+            props.put("headerline",
+                    "ID,YEAR,DAY_OF_MONTH,FL_DATE,AIRLINE_ID,CARRIER,FL_NUM," +
+                            "ORIGIN_AIRPORT_ID,ORIGIN,ORIGIN_CITY_NAME,ORIGIN_STATE_ABR,DEST," +
+                            "DEST_CITY_NAME,DEST_STATE_ABR,DEP_TIME,ARR_TIME,ACTUAL_ELAPSED_TIME,AIR_TIME,DISTANCE");
+            props.put("columnTypes", "Int,Int,Int,Date,Int,String,Int,Int,String,String,String,String," +
+                    "String,String,Time,Time,Time,Time,Int");
+            props.put("dateFormat", "yyyy/MM/dd");
+            props.put("timeFormat", "HHmm");
+            Connection conn = DriverManager.getConnection("jdbc:relique:csv:" + DIRECTORY_WITH_CSVS, props);
+            Statement stmt = conn.createStatement();
+            ResultSet results = stmt.executeQuery("SELECT DISTINCT ORIGIN FROM flights_from_pg");
+            ArrayList<String> origins = new ArrayList<String>();
+
+            while (results.next()) {
+                origins.add(results.getString(1));
+            }
+            conn.close();
+            return origins;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }
